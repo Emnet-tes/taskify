@@ -1,11 +1,23 @@
 "use client";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TaskProps } from "../types";
 import TaskForm from "./TaskForm";
 import TaskCard from "./TaskCard";
 const TaskList = () => {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
+// get tasks from local storage
+  useEffect(() => {
+    const storedTasks = localStorage.getItem("tasks");
+    if (storedTasks) {
+      setTasks(JSON.parse(storedTasks));
+    }
+  }, []);
+// store tasks in local storage
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
   // Add a new task
   function addTask(task: TaskProps) {
     setTasks([...tasks, task]);
