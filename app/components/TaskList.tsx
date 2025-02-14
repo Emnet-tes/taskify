@@ -9,6 +9,7 @@ const TaskList = () => {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
   const [filter, setFilter] = useState<string>("all");
   const dropdownRef = useRef<HTMLDetailsElement>(null);
+  
   // get tasks from local storage
   useEffect(() => {
     const storedTasks = localStorage.getItem("tasks");

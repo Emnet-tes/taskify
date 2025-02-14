@@ -1,11 +1,7 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { TaskProps } from "../types";
-
-interface TaskFormProps {
-  addTask: (task: TaskProps) => void;
-}
+import { TaskFormProps, TaskProps } from "../types";
 
 const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
   const generateUniqueId = require("generate-unique-id");
@@ -13,7 +9,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
     id: "",
     value: "",
     status: "pending",
-
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,9 +16,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
     if (newTask.value.trim() !== "") {
       addTask(newTask);
       const id1 = generateUniqueId();
-      setNewTask({ value: "", status: "pending" , id : id1});
+      setNewTask({ value: "", status: "pending", id: id1 });
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -34,7 +29,11 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
           className=" flex w-3/4  border-2 border-gray-300 rounded p-2"
           value={newTask.value}
           onChange={(e) =>
-            setNewTask({ value: e.target.value, status: "pending" , id : newTask.id })
+            setNewTask({
+              value: e.target.value,
+              status: "pending",
+              id: newTask.id,
+            })
           }
         />
         <button
