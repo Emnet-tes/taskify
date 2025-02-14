@@ -3,7 +3,7 @@ import TaskList from "./components/TaskList";
 
 export default function Home() {
   return (
-    <div className="flex w-full h-screen justify-between p-8 md:p-12">
+    <div className=" flex w-full h-screen justify-between p-8 md:p-12">
       <TaskList />
       <Image
         src="/todolist.svg"

@@ -8,14 +8,12 @@ import { FaEdit } from "react-icons/fa";
 import Modal from "./Modal";
 interface TaskCardProps {
   task: TaskProps;
-  index: number;
-  editTask: (index: number, task: TaskProps) => void;
-  deleteTask: (index: number) => void;
+  editTask: (id:string, task: TaskProps) => void;
+  deleteTask: (id: string) => void;
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({
   task,
-  index,
   editTask,
   deleteTask,
 }) => {
@@ -28,7 +26,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
       <div className="flex items-center gap-2">
         <button
           onClick={() =>
-            editTask(index, {
+            editTask(task.id, {
               ...task,
               status: task.status == "completed" ? "pending" : "completed",
             })
@@ -47,18 +45,16 @@ const TaskCard: React.FC<TaskCardProps> = ({
         <button
           onClick={handleModalToggle} 
         >
-          {" "}
           <FaEdit />
         </button>
-        <button onClick={() => deleteTask(index)}>
-          {" "}
+        <button onClick={() => deleteTask(task.id)}>
           <MdDelete />
         </button>
       </div>
       {isModalOpen && (
           <div onClick={handleModalToggle} >
             <div className="relative bg-white p-6 rounded-lg shadow-lg max-w-md w-full " onClick={(e) => e.stopPropagation}>
-              <Modal isModalOpen={isModalOpen} onClose={handleModalToggle} task={task} editTask={editTask} index={index} />
+              <Modal isModalOpen={isModalOpen} onClose={handleModalToggle} task={task} editTask={editTask}  />
             </div>
           </div>
       )}

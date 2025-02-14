@@ -6,16 +6,15 @@ interface ModalProps {
   isModalOpen: boolean;
   onClose: () => void;
   task: TaskProps;
-  editTask: (index: number, task: TaskProps) => void;
-  index: number;
+  editTask: (id:string, task: TaskProps) => void;
 }
 
-const Modal = ({ isModalOpen, onClose, task, editTask, index }: ModalProps) => {
+const Modal = ({ isModalOpen, onClose, task, editTask }: ModalProps) => {
   const [newTask, setNewTask] = React.useState<TaskProps>(task);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    editTask(index, newTask);
+    editTask(task.id, newTask);
     onClose();
   }
 
@@ -46,7 +45,7 @@ const Modal = ({ isModalOpen, onClose, task, editTask, index }: ModalProps) => {
               className="w-full border-2 border-gray-300 rounded p-2"
               value={newTask.value}
               onChange={(e) =>
-                setNewTask({ value: e.target.value, status: newTask.status })
+                setNewTask({ value: e.target.value, status: newTask.status ,id:task.id})
               }
               autoFocus
             />
