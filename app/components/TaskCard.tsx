@@ -1,13 +1,15 @@
-import React from "react";
+import React, { use } from "react";
 import { useState } from "react";
-import { TaskCardProps, TaskProps } from "../types";
+import { TaskCardProps } from "../types";
 import { IoIosCheckbox } from "react-icons/io";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Modal from "./Modal";
-
-const TaskCard: React.FC<TaskCardProps> = ({ task, editTask, deleteTask }) => {
+import { useAppDispatch } from "../lib/hooks";
+import { toggleStatus, deleteTask } from "../lib/features/todos/todosSlice";
+const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+  const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -15,19 +17,8 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, editTask, deleteTask }) => {
   return (
     <li className="list-group-item flex justify-between border-2 border-gray-200 p-4 mb-2 rounded-lg ">
       <div className="flex items-center gap-2">
-        <button
-          onClick={() =>
-            editTask(task.id, {
-              ...task,
-              status: task.status == "completed" ? "pending" : "completed",
-            })
-          }
-        >
-          {task.status == "completed" ? (
-            <IoIosCheckbox />
-          ) : (
-            <MdCheckBoxOutlineBlank />
-          )}
+        <button onClick={() => dispatch(toggleStatus(task.id))}>
+          {task.status == true ? <IoIosCheckbox /> : <MdCheckBoxOutlineBlank />}
         </button>
 
         <span>{task.value}</span>
@@ -36,7 +27,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, editTask, deleteTask }) => {
         <button onClick={handleModalToggle}>
           <FaEdit />
         </button>
-        <button onClick={() => deleteTask(task.id)}>
+        <button onClick={() => dispatch(deleteTask(task.id))}>
           <MdDelete />
         </button>
       </div>
@@ -50,7 +41,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, editTask, deleteTask }) => {
               isModalOpen={isModalOpen}
               onClose={handleModalToggle}
               task={task}
-              editTask={editTask}
             />
           </div>
         </div>

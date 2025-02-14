@@ -1,13 +1,15 @@
 import React from "react";
 import { ModalProps, TaskProps } from "../types";
 import { IoIosCloseCircle } from "react-icons/io";
-
-const Modal = ({ isModalOpen, onClose, task, editTask }: ModalProps) => {
+import { editTask } from "../lib/features/todos/todosSlice";
+import { useAppDispatch } from "../lib/hooks";
+const Modal = ({ isModalOpen, onClose, task }: ModalProps) => {
   const [newTask, setNewTask] = React.useState<TaskProps>(task);
-
+  const dispatch = useAppDispatch();
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    editTask(task.id, newTask);
+    dispatch(editTask({ id: task.id, updatedTask: newTask }));
+
     onClose();
   }
 

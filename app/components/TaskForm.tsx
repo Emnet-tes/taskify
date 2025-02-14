@@ -1,22 +1,24 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { TaskFormProps, TaskProps } from "../types";
-
-const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
+import { TaskProps } from "../types";
+import { useAppDispatch } from "../lib/hooks";
+import { addTask } from "../lib/features/todos/todosSlice";
+const TaskForm = () => {
   const generateUniqueId = require("generate-unique-id");
+  const dispatch = useAppDispatch();
+   const id1 = generateUniqueId();
   const [newTask, setNewTask] = useState<TaskProps>({
     id: "",
     value: "",
-    status: "pending",
+    status: false,
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newTask.value.trim() !== "") {
-      addTask(newTask);
-      const id1 = generateUniqueId();
-      setNewTask({ value: "", status: "pending", id: id1 });
+      dispatch(addTask(newTask));
+      setNewTask({ value: "", status: false, id: "" });
     }
   };
 
@@ -31,8 +33,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
           onChange={(e) =>
             setNewTask({
               value: e.target.value,
-              status: "pending",
-              id: newTask.id,
+              status: false,
+              id: id1,
             })
           }
         />

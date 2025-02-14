@@ -5,42 +5,25 @@ import { TaskProps } from "../types";
 import TaskForm from "./TaskForm";
 import TaskCard from "./TaskCard";
 import { IoFilter } from "react-icons/io5";
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import { setTasks } from "../lib/features/todos/todosSlice";
 const TaskList = () => {
-  const [tasks, setTasks] = useState<TaskProps[]>([]);
+  const dispatch = useAppDispatch();
+  const tasks = useAppSelector((state) => state.todo.tasks);
   const [filter, setFilter] = useState<string>("all");
   const dropdownRef = useRef<HTMLDetailsElement>(null);
-  
+
   // get tasks from local storage
   useEffect(() => {
     const storedTasks = localStorage.getItem("tasks");
     if (storedTasks) {
-      setTasks(JSON.parse(storedTasks));
+      dispatch(setTasks(JSON.parse(storedTasks)));
     }
-  }, []);
+  }, [dispatch]);
 
-  // store tasks in local storage
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
-
-  // Add a new task
-  function addTask(task: TaskProps) {
-    setTasks([...tasks, task]);
-  }
-  // Edit a task
-  function editTask(id: string, updatedTask: TaskProps) {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? updatedTask : task);
-      setTasks(updatedTasks);
-  }
-  // Delete a task
-  function deleteTask(id: string) {
-    const filteredTasks = tasks.filter((task) => task.id !== id);
-    setTasks(filteredTasks);
-  }
   const filteredTasks = tasks.filter((task) => {
-    if (filter === "pending") return task.status === "pending";
-    if (filter === "completed") return task.status === "completed";
+    if (filter === "pending") return task.status === false;
+    if (filter === "completed") return task.status === true;
     return true;
   });
 
@@ -56,7 +39,7 @@ const TaskList = () => {
     <div className="flex flex-col w-full">
       <h2 className="text-center text-2xl font-bold">Taskify</h2>
       {/* form to accept task */}
-      <TaskForm addTask={addTask} />
+      <TaskForm />
       <div className="flex justify-between">
         <h3 className=" text-lg font-bold">Task List</h3>
         <details className="dropdown" ref={dropdownRef}>
@@ -69,10 +52,14 @@ const TaskList = () => {
               <button onClick={() => handleFilterSelection("all")}>All</button>
             </li>
             <li>
-              <button onClick={() => handleFilterSelection("pending")}>Pending</button>
+              <button onClick={() => handleFilterSelection("pending")}>
+                Pending
+              </button>
             </li>
             <li>
-              <button onClick={() => handleFilterSelection("completed")}>Completed</button>
+              <button onClick={() => handleFilterSelection("completed")}>
+                Completed
+              </button>
             </li>
           </ul>
         </details>
@@ -81,12 +68,7 @@ const TaskList = () => {
       <ul className="list-group list-none">
         {filteredTasks.map((task, index) => (
           // Pass the task, index, editTask, and deleteTask functions as props to the TaskCard component
-          <TaskCard
-            key={index}
-            task={task}
-            editTask={editTask}
-            deleteTask={deleteTask}
-          />
+          <TaskCard key={index} task={task} />
         ))}
       </ul>
     </div>
