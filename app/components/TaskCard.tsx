@@ -40,7 +40,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
           {task.status == true ? <IoIosCheckbox /> : <MdCheckBoxOutlineBlank />}
         </button>
 
-        <span>{task.value}</span>
+        <span className="truncate md:max-w-lg max-w-40">{task.value}</span>
       </div>
       <div className="flex gap-6">
         <button onClick={handleModalToggle}>
