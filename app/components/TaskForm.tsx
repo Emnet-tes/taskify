@@ -4,7 +4,11 @@ import { useState } from "react";
 import { TaskProps } from "../types";
 import { useAppDispatch } from "../lib/hooks";
 import { addTask } from "../lib/features/todos/todosSlice";
+import { MdOutlineDarkMode } from "react-icons/md";
+import { CiLight } from "react-icons/ci";
+import useTheme from "../contect/ThemeContext";
 const TaskForm = () => {
+  const {theme, toggleTheme} = useTheme();
   const generateUniqueId = require("generate-unique-id");
   const id1 = generateUniqueId();
   const dispatch = useAppDispatch();
@@ -41,9 +45,12 @@ const TaskForm = () => {
         />
         <button
           type="submit"
-          className=" w-1/4 bg-indigo-600 text-white rounded-lg text-sm"
+          className=" w-1/4 bg-indigo-600 text-white rounded-lg btn"
         >
           Add Task
+        </button> 
+        <button className={`btn light:bg-gray-300 dark:bg-gray-700 `} onClick={toggleTheme}>
+         {theme == "dark" ? <MdOutlineDarkMode /> :<CiLight />}
         </button>
       </div>
     </form>

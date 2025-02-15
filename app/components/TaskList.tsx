@@ -44,7 +44,7 @@ const TaskList = () => {
       <div className="flex justify-between">
         <h3 className=" text-lg font-bold">Task List</h3>
         <details className="dropdown" ref={dropdownRef}>
-          <summary className="btn m-1">
+          <summary className={`btn m-1 light:bg-gray-300 dark:bg-gray-700`}>
             {filter}
             <IoFilter />
           </summary>
