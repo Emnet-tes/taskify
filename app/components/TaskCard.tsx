@@ -9,13 +9,32 @@ import Modal from "./Modal";
 import { useAppDispatch } from "../lib/hooks";
 import { toggleStatus, deleteTask } from "../lib/features/todos/todosSlice";
 const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+
   const dispatch = useAppDispatch();
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // handle modal toggle
   const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
   };
+  
+  // handle delete task
+  const handleDelete = () => {
+    setIsDeleting(!isDeleting);
+    setTimeout(() => {
+      dispatch(deleteTask(task.id));
+    }, 1000);
+  };
+
   return (
-    <li className="list-group-item flex justify-between border-2 border-gray-200 p-4 mb-2 rounded-lg ">
+    <li
+      className={`list-group-item flex justify-between border-2 border-gray-200 p-4 mb-2 rounded-lg animate-bounce animate-twice animate-ease-in-out ${
+        isDeleting
+          ? "animate-jump-out animate-duration-1000 animate-ease-in-out"
+          : ""
+      }`}
+    >
       <div className="flex items-center gap-2">
         <button onClick={() => dispatch(toggleStatus(task.id))}>
           {task.status == true ? <IoIosCheckbox /> : <MdCheckBoxOutlineBlank />}
@@ -27,7 +46,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
         <button onClick={handleModalToggle}>
           <FaEdit />
         </button>
-        <button onClick={() => dispatch(deleteTask(task.id))}>
+        <button onClick={() => handleDelete()}>
           <MdDelete />
         </button>
       </div>

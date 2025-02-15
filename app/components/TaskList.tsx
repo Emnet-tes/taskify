@@ -21,6 +21,7 @@ const TaskList = () => {
     }
   }, [dispatch]);
 
+  // filter tasks based on status
   const filteredTasks = tasks.filter((task) => {
     if (filter === "pending") return task.status === false;
     if (filter === "completed") return task.status === true;
@@ -65,9 +66,9 @@ const TaskList = () => {
         </details>
       </div>
 
-      <ul className="list-group list-none">
+      <ul className="list-group list-none ">
         {filteredTasks.map((task, index) => (
-          // Pass the task, index, editTask, and deleteTask functions as props to the TaskCard component
+          // Pass the task as props to the TaskCard component
           <TaskCard key={index} task={task} />
         ))}
       </ul>

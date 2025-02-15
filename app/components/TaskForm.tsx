@@ -6,14 +6,15 @@ import { useAppDispatch } from "../lib/hooks";
 import { addTask } from "../lib/features/todos/todosSlice";
 const TaskForm = () => {
   const generateUniqueId = require("generate-unique-id");
+  const id1 = generateUniqueId();
   const dispatch = useAppDispatch();
-   const id1 = generateUniqueId();
   const [newTask, setNewTask] = useState<TaskProps>({
     id: "",
     value: "",
     status: false,
   });
 
+  // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newTask.value.trim() !== "") {
