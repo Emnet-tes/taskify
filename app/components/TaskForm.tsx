@@ -7,9 +7,10 @@ import { addTask } from "../lib/features/todos/todosSlice";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { CiLight } from "react-icons/ci";
 import useTheme from "../contect/ThemeContext";
+import generateUniqueId from "generate-unique-id";
+
 const TaskForm = () => {
   const {theme, toggleTheme} = useTheme();
-  const generateUniqueId = require("generate-unique-id");
   const id1 = generateUniqueId();
   const dispatch = useAppDispatch();
   const [newTask, setNewTask] = useState<TaskProps>({
@@ -49,7 +50,7 @@ const TaskForm = () => {
         >
           Add Task
         </button> 
-        <button className={`btn light:bg-gray-300 dark:bg-gray-700 `} onClick={toggleTheme}>
+        <button className={`btn ${ theme == "light" ? "bg-gray-300" : "bg-gray-700"} `} onClick={toggleTheme}>
          {theme == "dark" ? <MdOutlineDarkMode /> :<CiLight />}
         </button>
       </div>

@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import { TaskProps } from "../types";
 import TaskForm from "./TaskForm";
 import TaskCard from "./TaskCard";
 import { IoFilter } from "react-icons/io5";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { setTasks } from "../lib/features/todos/todosSlice";
+import useTheme from "../contect/ThemeContext";
 const TaskList = () => {
+  const {theme} = useTheme();
   const dispatch = useAppDispatch();
   const tasks = useAppSelector((state) => state.todo.tasks);
   const [filter, setFilter] = useState<string>("all");
@@ -15,10 +16,11 @@ const TaskList = () => {
 
   // get tasks from local storage
   useEffect(() => {
+    if (typeof window !== "undefined") {
     const storedTasks = localStorage.getItem("tasks");
     if (storedTasks) {
       dispatch(setTasks(JSON.parse(storedTasks)));
-    }
+    }}
   }, [dispatch]);
 
   // filter tasks based on status
@@ -44,7 +46,7 @@ const TaskList = () => {
       <div className="flex justify-between">
         <h3 className=" text-lg font-bold">Task List</h3>
         <details className="dropdown" ref={dropdownRef}>
-          <summary className={`btn m-1 light:bg-gray-300 dark:bg-gray-700`}>
+          <summary className={`btn m-1 ${theme == "light" ?" bg-gray-300 ":"bg-gray-700"}   `}>
             {filter}
             <IoFilter />
           </summary>
@@ -65,7 +67,6 @@ const TaskList = () => {
           </ul>
         </details>
       </div>
-
       <ul className="list-group list-none ">
         {filteredTasks.map((task, index) => (
           // Pass the task as props to the TaskCard component
